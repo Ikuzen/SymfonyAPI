@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Symfony API",
+      "Group": "Servers",
+      "Port": 5432,
+      "Username": "symfony",
+      "Host": "database",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres"
+    }
+  }
+}

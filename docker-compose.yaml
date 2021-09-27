@@ -3,14 +3,26 @@ services:
   database:
     container_name: symfony-api-database
     image: postgres
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_DB: symfony
+      POSTGRES_USER: symfony
       POSTGRES_HOST_AUTH_METHOD: trust
+  pgadmin:
+    container_name: symfony-api-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@postgres.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - ./pgadmin.json:/pgadmin4/servers.json
+    ports:
+      - "5400:80"
+    links:
+      - database
   api:
     build:
       context: .
+      dockerfile: Dockerfile.dev
     container_name: symfony-api
     environment:
       SYMFONY_PROJECT_NAME: sympfony-app
