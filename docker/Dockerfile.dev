@@ -1,4 +1,8 @@
-FROM php
+FROM php:fpm-alpine
+
+RUN apk update
+RUN apk add m4 g++ make perl autoconf libmagic file re2c dpkg-dev
+RUN apk add postgresql-dev
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
@@ -6,9 +10,12 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php -r "unlink('composer-setup.php');" && \
     install composer.phar /usr/local/bin/composer
 
-ADD https://get.symfony.com/cli/installer /tmp/installer
+RUN docker-php-ext-install pgsql pdo_pgsql
 
-RUN chmod +x /tmp/installer && /tmp/installer --install-dir=/usr/local/bin && rm /tmp/installer
+ADD https://github.com/symfony/cli/releases/download/v4.26.3/symfony_linux_amd64.gz /tmp/symfony.gz
+RUN gzip -d -c /tmp/symfony.gz > /usr/local/bin/symfony \
+    && chmod +x /usr/local/bin/symfony && rm /tmp/symfony.gz
+
 
 WORKDIR /app
 
