@@ -2,23 +2,22 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\SuperheroesRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiResource;
+
 /**
- * @ORM\Entity(repositoryClass=SuperheroesRepository::class)
+ * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="superheroes")
  * @ApiResource()
  */
-#[ApiResource]
 class Superheroes
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private ?int $id = null;
