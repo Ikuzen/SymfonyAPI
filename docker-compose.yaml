@@ -16,7 +16,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@postgres.org
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
-      - ./pgadmin.json:/pgadmin4/servers.json
+      - ./docker/pgadmin.json:/pgadmin4/servers.json
     ports:
       - "5400:80"
     links:
@@ -24,11 +24,11 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: docker/Dockerfile.dev
     container_name: symfony-api
     environment:
       SYMFONY_PROJECT_NAME: sympfony-app
-      DATABASE_URL: pgsql://database:5432/symfony
+      DATABASE_URL: pgsql://symfony@database:5432/symfony
       APP_ENV: dev
       APP_SECRET: e92948d0-ddaf-4164-ae32-6daef7cf0388
     ports:
