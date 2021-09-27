@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  database:
+    container_name: symfony-api-database
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: symfony
+      POSTGRES_HOST_AUTH_METHOD: trust
+  api:
+    build:
+      context: .
+    container_name: symfony-api
+    environment:
+      SYMFONY_PROJECT_NAME: sympfony-app
+      DATABASE_URL: pgsql://database:5432/symfony
+      APP_ENV: dev
+      APP_SECRET: e92948d0-ddaf-4164-ae32-6daef7cf0388
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    links:
+      - database
